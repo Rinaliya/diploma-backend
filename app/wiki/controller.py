@@ -2,15 +2,21 @@
 from app import app, db, WikiPage
 from flask import jsonify, request
 
+
 @app.route('/api/wiki', methods=['GET'])
 def get_all_wiki_pages():
-    pages = WikiPage.query.all()
+    locale = request.args.get('locale')
+    if locale:
+        pages = WikiPage.query.filter(WikiPage.locale == locale)
+    else:
+        pages = WikiPage.query.all()
     if pages:
         pages_list = [page.to_dict() for page in pages]
         print(pages_list)
         return jsonify(pages_list)
     else:
         return jsonify([])
+
 
 @app.route('/api/wiki/<id>', methods=['GET'])
 def get_wiki_page_by_id(id):
@@ -20,6 +26,7 @@ def get_wiki_page_by_id(id):
         return jsonify(page_dict)
     else:
         return jsonify({})
+
 
 @app.route('/api/wiki/slug/<slug>', methods=['GET'])
 def get_wiki_page_by_slug(slug):
@@ -43,6 +50,7 @@ def create_wiki_page():
     db.session.add(page)
     db.session.commit()
     return jsonify({'status': 'success'})
+
 
 @app.route('/api/wiki/<id>', methods=['PUT'])
 def edit_wiki_page_by_id(id):
@@ -69,6 +77,7 @@ def edit_wiki_page_by_id(id):
         return jsonify({'status': 'success'})
     else:
         return jsonify({'status': 'fail'})
+
 
 @app.route('/api/wiki/<id>', methods=['DELETE'])
 def delete_wiki_page_by_id(id):
