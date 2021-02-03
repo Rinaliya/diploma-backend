@@ -45,3 +45,4 @@ def get_images_by_category(category):
 
 
 from app.wiki.controller import *
+from app.terms.controller import *

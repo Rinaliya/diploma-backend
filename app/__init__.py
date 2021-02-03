@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 from app.wiki.model import WikiPage
+from app.terms.model import Term
 # db.init_app(app)
 
 #
