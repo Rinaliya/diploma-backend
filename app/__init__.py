@@ -7,6 +7,9 @@ app = Flask(__name__)
 
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+from app.auth.blacklist_token_model import BlacklistToken
+from app.auth.refresh_token_model import RefreshToken
+from app.users.model import User
 from app.wiki.model import WikiPage
 from app.terms.model import Term
 # db.init_app(app)
@@ -17,7 +20,6 @@ from app.terms.model import Term
 
 # db.create_all() after any changes in models
 
-print(db)
 db.create_all()
 migrate = Migrate(app, db, ssl_context='adhoc')
 
