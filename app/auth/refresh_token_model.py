@@ -26,4 +26,16 @@ class RefreshToken(db.Model):
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return '<id: token: {}>'.format(self.token)
+        return '<id: token: {}>'.format(self.refresh_token)
+
+    def to_dict(self):
+        token = {
+            'id': self.id,
+            'refresh_token': self.refresh_token,
+            'user_id': self.user_id,
+            'user_agent': self.user_agent,
+            'ip': self.ip,
+            'expires_in': self.expires_in,
+            'created_at': self.created_at
+        }
+        return token

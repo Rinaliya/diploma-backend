@@ -7,7 +7,7 @@ from hashlib import sha256
 prefix = '/api/users'
 
 
-@app.route(prefix + '', methods=['GET'])
+@app.route(prefix, methods=['GET'])
 def get_all_users():
     users = User.query.all()
     if users:
@@ -27,7 +27,7 @@ def get_user(user_id):
         return jsonify({})
 
 
-@app.route('/api/users', methods=['POST'])
+@app.route(prefix, methods=['POST'])
 def create_user():
     username = request.json.get('username')
     first_name = request.json.get('first_name')
@@ -45,16 +45,29 @@ def create_user():
     return {'status': 'success'}
 
 
-@app.route('/api/users/<user_id>', methods=['PUT'])
+@app.route(prefix + '/<user_id>', methods=['PUT'])
 def edit_user(user_id):
+    print('editing user with id', user_id)
     user = User.query.filter(User.id == user_id).first()
-    if request.form.get('username'):
+    if request.json.get('username'):
         user.username = request.json.get('username')
-    if request.form.get('first_name'):
+    if request.json.get('first_name'):
         user.first_name = request.json.get('first_name')
-    if request.form.get('last_name'):
+    if request.json.get('last_name'):
         user.last_name = request.json.get('last_name')
-    if request.form.get('can_create_users'):
+    if request.json.get('can_create_users'):
         user.status = request.json.get('can_create_users')
+    print(user.to_dict())
     db.session.commit()
     return {'status': 'success'}
+
+
+@app.route(prefix + '/<user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = User.query.filter(User.id == user_id).first()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return {'status': 'success'}, 200
+    else:
+        return {'status': 'fail'}, 500

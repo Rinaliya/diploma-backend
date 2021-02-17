@@ -10,11 +10,14 @@ def encode_auth_token(user_id, expire_at):
     :return: string
     """
     try:
+        print('encoding auth token')
         payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=expire_at),
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
         }
+        print('payload is', payload)
+        print(jwt)
         return jwt.encode(
             payload,
             app.config.get('SECRET_KEY'),
