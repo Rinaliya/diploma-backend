@@ -211,13 +211,14 @@ def logout():
             # and remove refresh token from a list of active refresh tokens
             # refresh_token_object = RefreshToken.query.filter(RefreshToken.refresh_token=refresh_token).first()
             print('\n+'.join([rt.to_dict()['refresh_token'] for rt in RefreshToken.query.all()]))
-            print('*'+refresh_token)
+            print('*', refresh_token)
             refresh_token_object = RefreshToken.query.filter(RefreshToken.refresh_token == refresh_token).first()
             print('\n\nrefresh_token_object\n\n', refresh_token_object)
-            db.session.delete(refresh_token_object)
-            print('deleted refresh token from database')
-            db.session.commit()
-            print('committed changes to database')
+            if refresh_token_object:
+                db.session.delete(refresh_token_object)
+                print('deleted refresh token from database')
+                db.session.commit()
+                print('committed changes to database')
 
             try:
                 # insert tokens
