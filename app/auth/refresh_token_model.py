@@ -4,9 +4,6 @@ from app import db
 
 
 class RefreshToken(db.Model):
-    """
-    Token Model for storing JWT tokens
-    """
     __tablename__ = 'refresh_tokens'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -4,9 +4,6 @@ from app import db
 
 
 class BlacklistToken(db.Model):
-    """
-    Token Model for storing JWT tokens
-    """
     __tablename__ = 'blacklist_tokens'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

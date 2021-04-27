@@ -1,6 +1,9 @@
 from app import app, db, Term
 from flask import jsonify, request
 
+from app.auth.authorized_decorator import authorized
+
+
 @app.route('/api/terms', methods=['GET'])
 def get_all_terms():
     terms = Term.query.all()
@@ -22,6 +25,7 @@ def get_terms_by_id(id):
         return jsonify({})
 
 
+@authorized
 @app.route('/api/terms', methods=['POST'])
 def create_terms():
     data = request.json
@@ -33,6 +37,8 @@ def create_terms():
     db.session.commit()
     return jsonify({'status': 'success'})
 
+
+@authorized
 @app.route('/api/terms/<id>', methods=['PUT'])
 def edit_terms_by_id(id):
     data = request.json
@@ -53,6 +59,8 @@ def edit_terms_by_id(id):
     else:
         return jsonify({'status': 'fail'})
 
+
+@authorized
 @app.route('/api/terms/<id>', methods=['DELETE'])
 def delete_terms_by_id(id):
     term = Term.query.filter(Term.id == id).first()

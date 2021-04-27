@@ -7,7 +7,6 @@ from app.auth.refresh_token_model import RefreshToken
 
 
 def check_login_status():
-    print('Checking login status')
     auth_token = request.json['accessToken']
     if auth_token:
         resp = decode_auth_token(auth_token)
@@ -59,8 +58,6 @@ def check_login_status():
 
 
 def refresh_access_token(refresh_token, user_agent):
-    print(refresh_token)
-    print(user_agent)
     if not check_blacklist(refresh_token):
         token = RefreshToken.query.filter_by(refresh_token=refresh_token)
         if token:
@@ -93,30 +90,25 @@ def refresh_access_token(refresh_token, user_agent):
         return make_response(jsonify(responseObject)), 500
 
 
+
+
 def login(email, password):
-    print('Logging in')
     try:
         # fetch the user data
         user = User.query.filter_by(
             email=email
         ).first()
-        print('Found user', user)
         password_hash = hashlib.sha256(password.encode()).hexdigest()
         if user.password_hash != password_hash:
             raise Exception('Wrong password')
-        print('Password is correct')
         auth_token = encode_auth_token(user.id, 60 * 30)  # accessToken
-        print('auth token is', auth_token)
         refresh_token = encode_auth_token(user_id=user.id, expire_at=60 * 60 * 24 * 60)  # refreshToken
-        print('refresh token is', refresh_token)
         # save refresh token in database
         refresh_token_object = RefreshToken(refresh_token=refresh_token.decode(), user_id=user.id,
                                             user_agent=request.user_agent.string,
                                             expires_in=60 * 60 * 24 * 60, ip=request.remote_addr)
-        print('created refresh token object')
         db.session.add(refresh_token_object)
         db.session.commit()
-        print('added refresh token to database')
         if auth_token:
             responseObject = {
                 'status': 'success',
@@ -126,11 +118,9 @@ def login(email, password):
             }
             resp = make_response(jsonify(responseObject))
             # save refresh token in httpOnly cookie available only in auth module
-            print('refresh token\n', refresh_token.decode())
             resp.set_cookie('refreshToken', refresh_token.decode(), httponly=True, path='/api/auth')
             return resp, 200
     except Exception as e:
-        print(e)
         responseObject = {
             'status': 'fail',
             'message': 'Try again'
@@ -139,11 +129,6 @@ def login(email, password):
 
 
 def register(username, first_name, last_name, email, password, status):
-    print('Registering')
-    # get the post data
-    post_data = request.get_json()
-    # check if user already exists
-    responseObject = {}
     user = User.query.filter_by(email=email).first()
     if not user:
         try:
@@ -195,44 +180,30 @@ def register(username, first_name, last_name, email, password, status):
 
 
 def logout():
-    print('Logging out')
     auth_token = request.json['accessToken']
     refresh_token = request.cookies.get('refreshToken')
-    print('tokens', auth_token, refresh_token)
     if auth_token:
         resp = decode_auth_token(auth_token)
-        print('resp', resp)
         if not isinstance(resp, str):
-            print('creating blacklist tokens for both received tokens')
             # mark both tokens as blacklisted
             blacklist_access_token = BlacklistToken(token=auth_token)
             blacklist_refresh_token = BlacklistToken(token=refresh_token)
-            print('removing refresh tokens from list of active refresh tokens')
             # and remove refresh token from a list of active refresh tokens
-            # refresh_token_object = RefreshToken.query.filter(RefreshToken.refresh_token=refresh_token).first()
-            print('\n+'.join([rt.to_dict()['refresh_token'] for rt in RefreshToken.query.all()]))
-            print('*', refresh_token)
             refresh_token_object = RefreshToken.query.filter(RefreshToken.refresh_token == refresh_token).first()
-            print('\n\nrefresh_token_object\n\n', refresh_token_object)
             if refresh_token_object:
                 db.session.delete(refresh_token_object)
-                print('deleted refresh token from database')
                 db.session.commit()
-                print('committed changes to database')
 
             try:
-                # insert tokens
-                print('adding blacklist tokens to database')
+                # blacklist tokens
                 db.session.add(blacklist_access_token)
                 db.session.add(blacklist_refresh_token)
                 db.session.commit()
-                print('added')
                 responseObject = {
                     'status': 'success',
                     'message': 'Successfully logged out.'
                 }
                 resp = make_response(jsonify(responseObject))
-                print('response', resp)
                 # remove refresh toke from cookies
                 resp.set_cookie('refreshToken', '', max_age=0)
                 return resp, 200
@@ -257,12 +228,9 @@ def logout():
 
 
 def get_current_user_profile():
-    print('Getting current user profile')
     auth_token = request.json['accessToken']
     if auth_token:
         resp = decode_auth_token(auth_token)
-        print('---')
-        print(resp)
         if not isinstance(resp, str):
             user = User.query.filter_by(id=resp).first()
             responseObject = {

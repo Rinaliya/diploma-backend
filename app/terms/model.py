@@ -1,5 +1,6 @@
 from app import db
 
+
 class Term(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     term = db.Column(db.String(1000), index=True)
@@ -17,3 +18,5 @@ class Term(db.Model):
             'locale': self.locale,
         }
         return term
+
+
