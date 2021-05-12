@@ -70,8 +70,7 @@ def edit_wiki_page_by_id(id):
             page.content = content
         if locale:
             page.locale = locale
-        if is_visible:
-            page.is_visible = is_visible
+        page.is_visible = is_visible
 
         db.session.commit()
         return jsonify({'status': 'success'})

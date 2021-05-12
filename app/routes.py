@@ -44,5 +44,8 @@ def get_images_by_category(category):
         return 'No such category: ' + category, 404
 
 
+from app.auth.controller import *
+from app.users.controller import *
 from app.wiki.controller import *
 from app.terms.controller import *
+
