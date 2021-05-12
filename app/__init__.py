@@ -19,6 +19,12 @@ from app.wiki.model import WikiPage
 from app.terms.model import Term
 from app.games.model import Game
 from app.game_categories.model import GameCategory
+from app.quizzes.model import Quiz
+from app.quiz_questions.model import QuizQuestion
+from app.lectures.model import Lecture
+from app.slides.model import Slide
+from app.slide_types.model import SlideType
+from app.characters.model import Character
 
 db.create_all()
 migrate = Migrate(app, db, ssl_context='adhoc')
