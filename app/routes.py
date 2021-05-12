@@ -48,4 +48,6 @@ from app.auth.controller import *
 from app.users.controller import *
 from app.wiki.controller import *
 from app.terms.controller import *
+from app.games.controller import *
+from app.game_categories.controller import *
 

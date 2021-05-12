@@ -17,6 +17,8 @@ from app.auth.refresh_token_model import RefreshToken
 from app.users.model import User
 from app.wiki.model import WikiPage
 from app.terms.model import Term
+from app.games.model import Game
+from app.game_categories.model import GameCategory
 
 db.create_all()
 migrate = Migrate(app, db, ssl_context='adhoc')
