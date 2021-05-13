@@ -7,7 +7,7 @@ class Quiz(db.Model):
     title = db.Column(db.String(1000), index=True)
     cover = db.Column(db.String(10000), index=True)
     locale = db.Column(db.String(10), index=True)
-    is_visible = db.Column(db.Boolean(), index=True)
+    is_visible = db.Column(db.Boolean, index=True)
     questions = db.relationship('QuizQuestion', backref='quiz', lazy='dynamic')
     lecture_id = db.Column(db.Integer, db.ForeignKey('lecture.id'))
 

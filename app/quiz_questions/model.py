@@ -8,7 +8,7 @@ class QuizQuestion(db.Model):
     answer2 = db.Column(db.String(10000), index=True)
     answer3 = db.Column(db.String(10000), index=True)
     answer4 = db.Column(db.String(10000), index=True)
-    correct_answer = db.Column(db.String(10000), index=True)
+    correct_answer = db.Column(db.Integer, index=True)
     locale = db.Column(db.String(10), index=True)
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'))
 

@@ -50,4 +50,7 @@ from app.wiki.controller import *
 from app.terms.controller import *
 from app.games.controller import *
 from app.game_categories.controller import *
+from app.characters.controller import *
+from app.slide_types.controller import *
+from app.slides.controller import *
 
