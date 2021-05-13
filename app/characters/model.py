@@ -8,6 +8,7 @@ class Character(db.Model):
     avatar_image = db.Column(db.String(10000), index=True)
     full_image = db.Column(db.String(10000), index=True)
     locale = db.Column(db.String(10), index=True)
+    slides = db.relationship('Slide', backref='character', lazy='dynamic')
 
     def __repr__(self):
         return '<Character id: {}, name: {}>, description: {}'.format(self.id, self.name, self.description)

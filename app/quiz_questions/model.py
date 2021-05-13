@@ -11,7 +11,6 @@ class QuizQuestion(db.Model):
     correct_answer = db.Column(db.String(10000), index=True)
     locale = db.Column(db.String(10), index=True)
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'))
-    # lecture_id = db.Column(db.Integer, db.ForeignKey('game_category.id'))
 
     def __repr__(self):
         return '<Quiz id: {}, title: {}>'.format(self.id, self.title)

@@ -9,7 +9,7 @@ class Quiz(db.Model):
     locale = db.Column(db.String(10), index=True)
     is_visible = db.Column(db.Boolean(), index=True)
     questions = db.relationship('QuizQuestion', backref='quiz', lazy='dynamic')
-    # lecture_id = db.Column(db.Integer, db.ForeignKey('game_category.id'))
+    lecture_id = db.Column(db.Integer, db.ForeignKey('lecture.id'))
 
     def __repr__(self):
         return '<Quiz id: {}, title: {}>'.format(self.id, self.title)
@@ -22,7 +22,7 @@ class Quiz(db.Model):
             'cover': self.cover,
             'locale': self.locale,
             'is_visible': self.is_visible,
-            # 'lecture': self.lecture.to_dict()
+            'lecture_id': self.lecture_id
         }
         return quiz
 

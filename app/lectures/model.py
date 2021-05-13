@@ -8,6 +8,7 @@ class Lecture(db.Model):
     locale = db.Column(db.String(10), index=True)
     is_visible = db.Column(db.Boolean, index=True)
     order = db.Column(db.Integer, index=True)
+    slides = db.relationship('Slide', backref='lecture', lazy='dynamic')
 
     def __repr__(self):
         return '<Lecture id: {}, title: {}>, order: {}'.format(self.id, self.title, self.order)
