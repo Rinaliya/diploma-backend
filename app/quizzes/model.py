@@ -22,7 +22,8 @@ class Quiz(db.Model):
             'cover': self.cover,
             'locale': self.locale,
             'is_visible': self.is_visible,
-            'lecture_id': self.lecture_id
+            'lecture_id': self.lecture_id,
+            'questions': self.questions
         }
         return quiz
 

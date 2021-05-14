@@ -71,7 +71,7 @@ def edit_slide_by_id(id):
             slide.payload = payload
         if locale:
             slide.locale = locale
-        if is_visible:
+        if is_visible is not None:
             slide.is_visible = is_visible
         if lecture_id:
             slide.lecture_id = lecture_id
