@@ -2,6 +2,7 @@ from app import db
 
 
 class GameCategory(db.Model):
+    __tablename__ = 'game_categories'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(1000), index=True)
     description = db.Column(db.String(10000), index=True)

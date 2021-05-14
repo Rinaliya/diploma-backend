@@ -2,6 +2,7 @@ from app import db
 
 
 class Quiz(db.Model):
+    __tablename__ = 'quizzes'
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(1000), index=True)
     title = db.Column(db.String(1000), index=True)
@@ -9,7 +10,7 @@ class Quiz(db.Model):
     locale = db.Column(db.String(10), index=True)
     is_visible = db.Column(db.Boolean, index=True)
     questions = db.relationship('QuizQuestion', backref='quiz', lazy='dynamic')
-    lecture_id = db.Column(db.Integer, db.ForeignKey('lecture.id'))
+    lecture_id = db.Column(db.Integer, db.ForeignKey('lectures.id'))
 
     def __repr__(self):
         return '<Quiz id: {}, title: {}>'.format(self.id, self.title)

@@ -2,6 +2,7 @@ from app import db
 
 
 class Lecture(db.Model):
+    __tablename__ = 'lectures'
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(1000), index=True)
     title = db.Column(db.String(1000), index=True)

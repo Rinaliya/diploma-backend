@@ -2,6 +2,7 @@ from app import db
 
 
 class Slide(db.Model):
+    __tablename__ = 'slides'
     id = db.Column(db.Integer, primary_key=True)
     order = db.Column(db.Integer, index=True)
     background = db.Column(db.String(1000), index=True)
@@ -9,9 +10,9 @@ class Slide(db.Model):
     payload = db.Column(db.String(10000), index=True)
     locale = db.Column(db.String(10), index=True)
     is_visible = db.Column(db.Boolean, index=True)
-    lecture_id = db.Column(db.Integer, db.ForeignKey('lecture.id'))
-    character_id = db.Column(db.Integer, db.ForeignKey('character.id'))
-    slide_type_id = db.Column(db.Integer, db.ForeignKey('slidetype.id'))
+    lecture_id = db.Column(db.Integer, db.ForeignKey('lectures.id'))
+    character_id = db.Column(db.Integer, db.ForeignKey('characters.id'))
+    slide_type_id = db.Column(db.Integer, db.ForeignKey('slidetypes.id'))
 
     def __repr__(self):
         return '<Slide id: {}, content: {}>, order: {}'.format(self.id, self.content, self.order)
@@ -25,10 +26,11 @@ class Slide(db.Model):
             'is_visible': self.is_visible,
             'content': self.content,
             'payload': self.payload,
-            'lecture_id': self.lecture_id,
-            'character_id': self.character_id,
+            'lecture_id': self.lecture.id,
+            'character_id': self.character.id,
             'character': self.character,
-            'slide_type_id': self.slide_type_id
+            'slide_type_id': self.slide_type.id,
+            'slide_type': self.slide_type
         }
         return slide
 

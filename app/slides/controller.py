@@ -3,7 +3,7 @@ from flask import jsonify, request
 
 from app.auth.authorized_decorator import authorized
 
-PREFIX = '/api/slide-types'
+PREFIX = '/api/slides'
 
 
 @app.route(PREFIX, methods=['GET'])

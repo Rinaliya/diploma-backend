@@ -2,6 +2,7 @@ from app import db
 
 
 class Character(db.Model):
+    __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1000), index=True)
     description = db.Column(db.String(10000), index=True)
