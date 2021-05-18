@@ -9,9 +9,12 @@ PREFIX = '/api/characters'
 @app.route(PREFIX, methods=['GET'])
 def get_all_characters():
     characters = Character.query.all()
+    locale = request.args.get('locale')
     if characters:
-        categories_list = [character.to_dict() for character in characters]
-        return jsonify(categories_list)
+        characters_list = [character.to_dict() for character in characters]
+        if locale:
+            characters_list = [c for c in filter(lambda c: c['locale'] == locale, characters_list)]
+        return jsonify(characters_list)
     else:
         return jsonify([])
 

@@ -7,6 +7,7 @@ class Game(db.Model):
     title = db.Column(db.String(1000), index=True)
     description = db.Column(db.String(10000), index=True)
     cover = db.Column(db.String(10000), index=True)
+    slug = db.Column(db.String(10000), index=True)
     locale = db.Column(db.String(10), index=True)
     category_id = db.Column(db.Integer, db.ForeignKey('game_categories.id'))
 
@@ -20,7 +21,9 @@ class Game(db.Model):
             'description': self.description,
             'cover': self.cover,
             'locale': self.locale,
-            'category': self.category.to_dict()
+            'slug': self.slug,
+            'category': self.category.to_dict(),
+            'category_id': self.category_id
         }
         return game
 

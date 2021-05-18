@@ -24,7 +24,7 @@ class QuizQuestion(db.Model):
             'answer2': self.answer2,
             'answer3': self.answer3,
             'answer4': self.answer4,
-            'correct_answer': self.correct_answer,
+            'correctAnswer': self.correct_answer,
             'locale': self.locale,
             'quiz_id': self.quiz_id,
             # 'lecture': self.lecture.to_dict()

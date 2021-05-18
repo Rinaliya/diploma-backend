@@ -26,6 +26,26 @@ def get_quizzes_by_id(id):
         return jsonify({})
 
 
+@app.route(PREFIX + '/slug/<slug>', methods=['GET'])
+def get_quizzes_by_slug(slug):
+    quiz = Quiz.query.filter(Quiz.slug == slug).first()
+    if quiz:
+        quiz_dict = quiz.to_dict()
+        return jsonify(quiz_dict)
+    else:
+        return jsonify({})
+
+
+@app.route(PREFIX + '/questions/<id>', methods=['GET'])
+def get_quiz_question_by_quiz_id(id):
+    quiz = Quiz.query.filter(Quiz.id == id).first()
+    if quiz:
+        quiz_dict = quiz.to_dict()
+        return jsonify(quiz_dict['questions'])
+    else:
+        return jsonify([])
+
+
 # @authorized
 @app.route(PREFIX, methods=['POST'])
 def create_quiz():
@@ -38,10 +58,12 @@ def create_quiz():
     questions = data['questions']
     quiz = Quiz(title=title, slug=slug, cover=cover, locale=locale, is_visible=is_visible)
     db.session.add(quiz)
+    db.session.commit()
     for q in questions:
-        question_object = QuizQuestion(question=q.question, answer1=q.answer1, answer2=q.answer2, answer3=q.answer3,
-                                       answer4=q.answer4, correct_answer=q.correctAnswer, quiz_id=quiz.id,
-                                       locale=quiz.locale)
+        print(questions)
+        question_object = QuizQuestion(question=q['question'], answer1=q['answer1'], answer2=q['answer2'],
+                                       answer3=q['answer3'], answer4=q['answer4'], correct_answer=q['correctAnswer'],
+                                       quiz_id=quiz.id, locale=quiz.locale)
         db.session.add(question_object)
     db.session.commit()
     return jsonify({'status': 'success'})
@@ -73,10 +95,12 @@ def edit_quiz_by_id(id):
         if is_visible is not None:
             quiz.is_visible = is_visible
         for q in questions:
+            print(q)
+            print(quiz.id)
             question_object = QuizQuestion(question=q['question'], answer1=q['answer1'], answer2=q['answer2'],
                                            answer3=q['answer3'], answer4=q['answer4'],
-                                           correct_answer=q['correctAnswer'], quiz_id=quiz['id'],
-                                           locale=quiz['locale'])
+                                           correct_answer=q['correctAnswer'], quiz_id=id,
+                                           locale=quiz.locale)
             db.session.add(question_object)
         db.session.commit()
         return jsonify({'status': 'success'})
@@ -89,6 +113,9 @@ def edit_quiz_by_id(id):
 def delete_quiz_by_id(id):
     quiz = Quiz.query.filter(Quiz.id == id).first()
     if quiz:
+        quiz_questions = quiz.questions
+        for question in quiz_questions:
+            db.session.delete(question)
         db.session.delete(quiz)
         db.session.commit()
         return jsonify({'status': 'success'})

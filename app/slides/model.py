@@ -28,9 +28,9 @@ class Slide(db.Model):
             'payload': self.payload,
             'lecture_id': self.lecture.id,
             'character_id': self.character.id,
-            'character': self.character,
+            'character': self.character.to_dict(),
             'slide_type_id': self.slide_type.id,
-            'slide_type': self.slide_type
+            'slide_type': self.slide_type.to_dict()
         }
         return slide
 

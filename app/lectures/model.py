@@ -21,7 +21,8 @@ class Lecture(db.Model):
             'slug': self.slug,
             'locale': self.locale,
             'is_visible': self.is_visible,
-            'order': self.order
+            'order': self.order,
+            'slides': [s.to_dict() for s in self.slides]
         }
         return lecture
 

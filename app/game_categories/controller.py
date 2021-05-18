@@ -9,8 +9,11 @@ PREFIX = '/api/game-categories'
 @app.route(PREFIX, methods=['GET'])
 def get_all_game_categories():
     game_categories = GameCategory.query.all()
+    locale = request.args.get('locale')
     if game_categories:
         categories_list = [category.to_dict() for category in game_categories]
+        if locale:
+            categories_list = [c for c in filter(lambda c: c['locale'] == locale, categories_list)]
         return jsonify(categories_list)
     else:
         return jsonify([])

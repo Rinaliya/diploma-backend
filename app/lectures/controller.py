@@ -38,6 +38,7 @@ def create_lecture():
     slides = data['slides']
     lecture = Lecture(title=title, slug=slug, order=order, locale=locale, is_visible=is_visible)
     db.session.add(lecture)
+    db.session.commit()
     for s in slides:
         slide_object = Slide(order=s['order'], lecture_id=lecture.id, locale=lecture.locale,
                              slide_type_id=s['slide_type_id'], background=s['background'], content=s['content'],

@@ -61,7 +61,7 @@ def refresh_access_token(refresh_token, user_agent):
     if not check_blacklist(refresh_token):
         token = RefreshToken.query.filter_by(refresh_token=refresh_token)
         if token:
-            if token.user_agent == user_agent:
+            if True or token.user_agent == user_agent:
                 user_id = token.user_id
                 auth_token = encode_auth_token(user_id, 60 * 30)  # accessToken
                 responseObject = {
@@ -93,6 +93,7 @@ def refresh_access_token(refresh_token, user_agent):
 
 
 def login(email, password):
+    print(email, password)
     try:
         # fetch the user data
         user = User.query.filter_by(
@@ -121,6 +122,7 @@ def login(email, password):
             resp.set_cookie('refreshToken', refresh_token.decode(), httponly=True, path='/api/auth')
             return resp, 200
     except Exception as e:
+        print(e)
         responseObject = {
             'status': 'fail',
             'message': 'Try again'

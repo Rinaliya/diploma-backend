@@ -26,6 +26,16 @@ def get_games_by_id(id):
         return jsonify({})
 
 
+@app.route(PREFIX + '/slug/<slug>', methods=['GET'])
+def get_games_by_slug(slug):
+    game = Game.query.filter(Game.slug == slug).first()
+    if game:
+        game_dict = game.to_dict()
+        return jsonify(game_dict)
+    else:
+        return jsonify({})
+
+
 @authorized
 @app.route(PREFIX, methods=['POST'])
 def create_game():
@@ -33,10 +43,11 @@ def create_game():
     title = data['title']
     description = data['description']
     cover = data['cover']
+    slug = data['slug']
     category_id = data['category_id']
     locale = data['locale']
     # category = GameCategory.query.filter(GameCategory.id == category_id).first()
-    game = Game(title=title, description=description, cover=cover, locale=locale, category_id=category_id)
+    game = Game(title=title, description=description, cover=cover, slug=slug, locale=locale, category_id=category_id)
     db.session.add(game)
     db.session.commit()
     return jsonify({'status': 'success'})
@@ -49,6 +60,7 @@ def edit_game_by_id(id):
     title = data['title']
     description = data['description']
     cover = data['cover']
+    slug = data['slug']
     category_id = data['category_id']
     locale = data['locale']
     game = Game.query.filter(Game.id == id).first()
@@ -59,6 +71,8 @@ def edit_game_by_id(id):
             game.description = description
         if cover:
             game.cover = cover
+        if slug:
+            game.slug = slug
         if locale:
             game.locale = locale
         if category_id:

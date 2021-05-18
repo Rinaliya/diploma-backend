@@ -24,7 +24,7 @@ class Quiz(db.Model):
             'locale': self.locale,
             'is_visible': self.is_visible,
             'lecture_id': self.lecture_id,
-            'questions': self.questions
+            'questions': [q.to_dict() for q in self.questions]
         }
         return quiz
 

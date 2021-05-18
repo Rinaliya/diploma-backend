@@ -6,6 +6,7 @@ class SlideType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(1000), index=True)
     description = db.Column(db.String(10000), index=True)
+    slides = db.relationship('Slide', backref='slide_type', lazy='dynamic')
 
     def __repr__(self):
         return '<SlideType id: {}, title: {}>, description: {}'.format(self.id, self.title, self.description)
